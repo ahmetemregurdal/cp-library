@@ -1,6 +1,3 @@
-#ifndef CP_LIBRARY_FASTIO_H
-#define CP_LIBRARY_FASTIO_H
-
 #include <type_traits>
 #include <limits>
 #include <string>
@@ -194,6 +191,6 @@ namespace FastIO {
             this->precision = precision;
         }
     };
+	outstream printer;
+	instream scanner;
 };
-
-#endif //CP_LIBRARY_FASTIO_H
