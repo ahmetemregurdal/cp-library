@@ -39,6 +39,25 @@ namespace FastIO {
             putchar_unlocked(c);
         }
     }
+	inline void print_longint(__int128_t n) {
+        if (n == 0) {
+            putchar_unlocked('0');
+            return;
+        }
+        if (n < 0) {
+            putchar_unlocked('-');
+            n = -n;
+        }
+        char buffer[40];
+        int i = 0;
+        while (n) {
+            buffer[i++] = n % 10 + '0';
+            n /= 10;
+        }
+        while (i) {
+            putchar_unlocked(buffer[--i]);
+        }
+	}
     template <typename T, typename std::enable_if<std::is_floating_point<T>::value, int>::type = 0>
     inline void print_float(T n, const int& precision = 10) {
         long long int_part = static_cast<long long>(n);
@@ -83,6 +102,20 @@ namespace FastIO {
         } while (c != ' ' && c != '\n');
         return is_negative ? -n : n;
     }
+	inline __int128_t scan_longint() {
+		__int128_t n = 0;
+        bool is_negative = false;
+        char c = scan_char();
+        if (c == '-') {
+            is_negative = true;
+            c = scan_char();
+        }
+        do {
+            n = n * 10 + c - '0';
+			c = getchar_unlocked();
+        } while (c != ' ' && c != '\n');
+        return is_negative ? -n : n;
+	}
     inline long double scan_float() {
         long double n = 0;
         bool is_negative = false;
@@ -110,6 +143,10 @@ namespace FastIO {
             n = FastIO::scan_int();
             return *this;
         }
+        instream& operator>>(__int128_t& n) {
+            n = FastIO::scan_longint();
+            return *this;
+        }
         instream& operator>>(std::string& str) {
             str = FastIO::scan_string();
             return *this;
@@ -130,6 +167,10 @@ namespace FastIO {
         template <typename T, typename std::enable_if<std::is_integral<T>::value, int>::type = 0>
         outstream& operator<<(T n) {
             FastIO::print_int(n);
+            return *this;
+        }
+        outstream& operator<<(__int128_t n) {
+            FastIO::print_longint(n);
             return *this;
         }
         template <typename T, typename std::enable_if<std::is_floating_point<T>::value, int>::type = 0>
